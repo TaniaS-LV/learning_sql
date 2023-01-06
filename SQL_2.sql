@@ -10,6 +10,7 @@ FROM
 INNER JOIN student USING (student_id)
 ORDER BY result DESC
 
+
 /* Alternative */
 SELECT name_student, date_attempt, result
 FROM student
@@ -25,7 +26,6 @@ FROM attempt
     RIGHT JOIN subject USING (subject_id) 
 GROUP BY name_subject
 ORDER BY Среднее DESC;
-
 
 
 /*3. Output the students (different students) who have the maximal results of their attempts. Sort the information in alphabetical order by the last name of the student.*/
@@ -90,7 +90,7 @@ ORDER BY name_student, date_attempt DESC
 
 
 /*9. For each question, print the percentage of successful solutions, that is, the ratio of the number of correct answers to the total number of answers, rounded to 2 decimal places. Also print the name of the subject to which the question applies and the total number of answers to that question. Include the name of the course, the questions it asks for (label the column Question), and the two calculated columns Total_responses and Success rate. Sort the information first by discipline name, then in descending order of success, and then alphabetically by question text.
-Because question texts can be long, trim them to 30 characters, and add a ellipsis "...". /*
+Because question texts can be long, trim them to 30 characters, and add a ellipsis "...". */
 SELECT name_subject, CONCAT(LEFT(name_question, 30), "...") AS Вопрос, Всего_ответов, Успешность
 FROM 
     (SELECT t.question_id, COUNT(attempt_id) AS Всего_ответов, ROUND(SUM(a.is_correct)/ COUNT(attempt_id) * 100,2) AS Успешность
@@ -101,13 +101,14 @@ FROM
     INNER JOIN subject USING (subject_id)
 ORDER BY name_subject, Успешность DESC, Вопрос
 
+
 /*10.Include a new attempt in the attempt table for student Baranov Pavel in Database Fundamentals. Set the current date as the date of the attempt.*/
 INSERT INTO attempt (student_id, subject_id, date_attempt, result)
 VALUES (1, 2, NOW(), null );
 SELECT * FROM attempt;
 
 
-/*11.Randomly select three questions (query) for the discipline the student who was last in the attempt table is going to be tested on, and add them to the testing table. Get the id of the last attempt as the maximum id from the attempt table./*
+/*11.Randomly select three questions (query) for the discipline the student who was last in the attempt table is going to be tested on, and add them to the testing table. Get the id of the last attempt as the maximum id from the attempt table.*/
 INSERT INTO testing (attempt_id, question_id)
 SELECT a.attempt_id, b.question_id
 FROM 
@@ -124,7 +125,6 @@ SELECT question_id
             FROM attempt))
     ORDER BY RAND()
     LIMIT 3 ) b ;
-    
 SELECT * FROM testing; 
 
 
@@ -141,8 +141,8 @@ WHERE attempt_id = (
     SELECT * FROM (
     SELECT MAX(attempt_id) FROM attempt) AS q 
 ); 
-
 SELECT * FROM attempt;
+
 
 /*13.Remove from the attempt table all attempts made before 1 May 2020. Also delete all questions corresponding to these attempts from the testing table.*/
 DELETE FROM attempt
